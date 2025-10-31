@@ -135,7 +135,7 @@ export default function SignIn() {
 							href="/signup"
 							className="opacity-90 flex items-center gap-3 font-medium font-lexend text-lg pointer-events-auto text-[#C53E8D]"
 						>
-							Don't have an account? Sign up
+							Signup
 						</Link>
 					</div>
 

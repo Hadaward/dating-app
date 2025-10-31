@@ -1,6 +1,6 @@
 import Splash from "@/components/Splash";
 
-export default function Home() {
+export default function SplashPage() {
   return (
     <main className="
       relative
