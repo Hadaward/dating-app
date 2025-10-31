@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSession } from "./lib/auth/session";
 
-const protectedRoutes = ['/home', '/users', '/messages', '/profile'];
+const protectedRoutes = ['/home', '/matches', '/likes', '/profile'];
 const publicRoutes = ['/signin', '/signup', '/'];
 
 export default async function proxy(req: NextRequest) {
