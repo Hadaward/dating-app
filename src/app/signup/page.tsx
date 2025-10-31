@@ -22,10 +22,10 @@ export default function SignUp() {
 				</Link>
 			</div>
 			<div className="w-full h-full flex flex-col items-center px-6 pb-6 pt-8">
-				<h1 className="font-semibold font-lexend text-white text-4xl">
+				<h1 className="font-semibold font-lexend text-white text-3xl md:text-4xl">
 					Profile Details
 				</h1>
-				<h2 className="font-lexend text-white">
+				<h2 className="font-lexend text-white text-sm sm:text-base">
 					Fill up the following details
 				</h2>
 
@@ -82,7 +82,7 @@ export default function SignUp() {
           </SelectField>
           
           <div
-            className="w-full flex items-center justify-center px-20 pt-8"
+            className="w-full flex items-center justify-center px-6 sm:px-10 md:px-20 pt-8"
           >
             <Button
               type="submit"
