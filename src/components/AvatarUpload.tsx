@@ -6,9 +6,10 @@ import { useRef, useState } from "react";
 
 export interface AvatarUploadProps {
   onAvatarChanged?: (file: File | null) => void;
+  onError?: (error: string) => void;
 }
 
-export default function AvatarUpload({ onAvatarChanged }: AvatarUploadProps) {
+export default function AvatarUpload({ onAvatarChanged, onError }: AvatarUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -25,13 +26,13 @@ export default function AvatarUpload({ onAvatarChanged }: AvatarUploadProps) {
 
     // Validar tipo de arquivo
     if (!file.type.match(/image\/(png|jpeg|jpg)/)) {
-      alert("Por favor, selecione apenas imagens PNG ou JPEG");
+      onError?.("Choose a valid image file (png, jpeg, jpg)");
       return;
     }
 
     // Validar tamanho (8MB = 8 * 1024 * 1024 bytes)
     if (file.size > 8 * 1024 * 1024) {
-      alert("A imagem deve ter no máximo 8MB");
+      onError?.("The image must be smaller than 8MB");
       return;
     }
 
