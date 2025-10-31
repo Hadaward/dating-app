@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ReactionType {
+  LIKE
+  SUPER_LIKE
+  DISLIKE
+}
+
+model Interest {
+  id       String   @id @default(cuid())
+  name      String   @unique
+
+  users UserInterest[]
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  firstName String
+  lastName  String
+  dateOfBirth DateTime @db.Date
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  photos Photo[]
+  profile Profile[]
+  interests UserInterest[]
+
+  reactionsFrom Reaction[] @relation("ReactionsFrom")
+  reactionsTo Reaction[] @relation("ReactionsTo")
+
+  matchesAsUserA Match[] @relation("MatchesAsUserA")
+  matchesAsUserB Match[] @relation("MatchesAsUserB")
+
+  Session Session[]
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  gender    Gender
+  preference Gender
+}
+
+model UserInterest {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  interest   Interest @relation(fields: [interestId], references: [id])
+  interestId String
+
+  @@unique([userId, interestId])
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  url      String
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id          String       @id @default(cuid())
+  fromUserId  String
+  toUserId    String
+  type        ReactionType
+  createdAt   DateTime     @default(now())
+
+  fromUser    User         @relation("ReactionsFrom", fields: [fromUserId], references: [id])
+  toUser      User         @relation("ReactionsTo", fields: [toUserId], references: [id])
+
+  @@unique([fromUserId, toUserId])
+  @@index([toUserId, type])
+  @@index([fromUserId, type])
+}
+
+model Match {
+  id          String   @id @default(cuid())
+  userAId     String
+  userBId     String
+  createdAt   DateTime @default(now())
+
+  userA       User     @relation("MatchesAsUserA", fields: [userAId], references: [id])
+  userB       User     @relation("MatchesAsUserB", fields: [userBId], references: [id])
+
+  @@unique([userAId, userBId])
+  @@unique([userBId, userAId])
+  @@index([userAId, userBId])
+  @@index([userBId, userAId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}

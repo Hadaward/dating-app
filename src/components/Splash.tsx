@@ -24,7 +24,7 @@ export default function Splash() {
             <Image src={Logo} alt="App Logo" className="w-44 h-auto" />
           </div>
 
-          <Link href="/signup" className="absolute bottom-20 z-10 flex items-center gap-3 font-bold font-lexend text-2xl pointer-events-auto bg-clip-text text-transparent bg-[linear-gradient(87.08deg,#DD3562_6.8%,#8354FF_102.07%)]">
+          <Link href="/signin" className="absolute bottom-20 z-10 flex items-center gap-3 font-bold font-lexend text-2xl pointer-events-auto bg-clip-text text-transparent bg-[linear-gradient(87.08deg,#DD3562_6.8%,#8354FF_102.07%)]">
             Get Started
             <ArrowForward className="text-white" sx={{ fontSize: '2rem' }} />
           </Link>
