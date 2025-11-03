@@ -228,24 +228,6 @@ export default function Home() {
                 </svg>
               </button>
 
-              {/* Photo Indicators - apenas se houver fotos extras */}
-              {extraPhotos.length > 0 && (
-                <div className="absolute top-6 left-6 right-6 flex gap-2">
-                  {extraPhotos.map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex-1 h-1 rounded-full bg-white/30 overflow-hidden"
-                    >
-                      <div
-                        className={`h-full bg-white transition-all duration-300 ${
-                          index === currentPhotoIndex ? "w-full" : "w-0"
-                        }`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
               {/* User Info */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex items-end justify-between mb-4">

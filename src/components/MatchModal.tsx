@@ -99,7 +99,7 @@ export default function MatchModal({
         {/* Profile circles */}
         <div className="relative w-full max-w-lg h-80 mb-8">
           {/* Current user circle (left) */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-[6px] border-white overflow-hidden bg-linear-to-br from-purple-600 to-purple-800 shadow-2xl z-10">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-4 border-white overflow-hidden shadow-2xl z-10">
             {currentUserAvatar ? (
               <img
                 src={currentUserAvatar}
@@ -107,7 +107,7 @@ export default function MatchModal({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-purple-600 to-purple-800">
                 <svg width="80" height="80" viewBox="0 0 24 24" fill="white" opacity="0.3">
                   <circle cx="12" cy="8" r="4" />
                   <path d="M12 14c-5 0-9 2-9 6v2h18v-2c0-4-4-6-9-6z" />
@@ -117,7 +117,7 @@ export default function MatchModal({
           </div>
 
           {/* Matched user circle (right) */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-[6px] border-white overflow-hidden bg-linear-to-br from-pink-500 to-pink-700 shadow-2xl z-10">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-4 border-white overflow-hidden shadow-2xl z-10">
             {matchedUser.avatar ? (
               <img
                 src={matchedUser.avatar}
@@ -125,7 +125,7 @@ export default function MatchModal({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-pink-500 to-pink-700">
                 <svg width="80" height="80" viewBox="0 0 24 24" fill="white" opacity="0.3">
                   <circle cx="12" cy="8" r="4" />
                   <path d="M12 14c-5 0-9 2-9 6v2h18v-2c0-4-4-6-9-6z" />
