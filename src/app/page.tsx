@@ -1,65 +1,33 @@
+"use client";
+import Logo from "@/assets/logo.png";
+import SplashBg from "@/assets/splash-bg.png";
+import { ArrowForward } from "@mui/icons-material";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function SplashScreen() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="w-full md:w-md h-full relative overflow-hidden bg-[linear-gradient(180deg,#140034_0%,#01010D_100%)]">
+      {/* Background Top Effect */}
+      <div className="absolute w-[36.956rem] h-[36.956rem] -top-32 -left-24 rotate-75 opacity-50 pointer-events-none bg-[linear-gradient(180deg,rgba(100,28,60,0.4)_0%,#07011A_100%)] mix-blend-normal blur-[2rem] z-1" />
+  
+      {/* Background Bottom Effect */}
+      <div className="absolute w-[36.956rem] h-[36.956rem] top-56 left-0 rotate-75 opacity-75 pointer-events-none bg-[linear-gradient(180deg,#270D59_0%,rgba(7,1,26,0)_100%)] mix-blend-screen blur-[12.5rem] z-2" />
+    
+      <section className="w-full h-full flex flex-col items-center justify-center">
+          <div className="relative z-3 w-96 h-auto pointer-events-none">
+            <Image src={SplashBg} alt="Background Splash" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="absolute z-4 pointer-events-none">
+            <Image src={Logo} alt="App Logo" className="w-44 h-auto" />
+          </div>
+
+          <Link href="/signin" className="fixed bottom-20 z-10 flex items-center gap-3 font-bold font-lexend text-2xl pointer-events-auto bg-clip-text text-transparent bg-[linear-gradient(87.08deg,#DD3562_6.8%,#8354FF_102.07%)]">
+            Get Started
+            <ArrowForward className="text-white" sx={{ fontSize: '2rem' }} />
+          </Link>
+        </section>
     </div>
-  );
+  )
 }

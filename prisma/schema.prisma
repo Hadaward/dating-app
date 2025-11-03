@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Orientation {
+  HETEROSEXUAL
+  BISEXUAL
+  GAY
+  LESBIAN
+  OTHER
+}
+
+enum ReactionType {
+  LIKE
+  SUPER_LIKE
+  DISLIKE
+}
+
+model Interest {
+  id       String   @id @default(cuid())
+  iconName String
+  name     String   @unique
+
+  UserInterest UserInterest[]
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime @db.Date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  photos    Photo[]
+  profile   Profile?  // Alterado para relação 1:1 opcional
+  interests UserInterest[]
+
+  reactionsFrom Reaction[] @relation("ReactionsFrom")
+  reactionsTo   Reaction[] @relation("ReactionsTo")
+
+  matchesAsUserA Match[] @relation("MatchesAsUserA")
+  matchesAsUserB Match[] @relation("MatchesAsUserB")
+
+  sessions Session[]  // Renomeado para plural (convenção)
+
+  @@index([email])  // Adicionar índice para login
+}
+
+model Profile {
+  id          String      @id @default(cuid())
+  userId      String      @unique
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gender      Gender
+  orientation Orientation
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model UserInterest {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  interest   Interest @relation(fields: [interestId], references: [id])
+  interestId String
+
+  @@unique([userId, interestId])
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // Adicionar cascata
+  url       String
+  order     Int      @default(0)  // Para ordenar fotos
+  isMain    Boolean  @default(false)  // Foto principal
+  createdAt DateTime @default(now())
+
+  @@index([userId, order])  // Índice para buscar fotos ordenadas
+  @@index([userId, isMain])  // Índice para foto principal
+}
+
+model Reaction {
+  id         String       @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  type       ReactionType
+  createdAt  DateTime     @default(now())
+
+  fromUser User @relation("ReactionsFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("ReactionsTo", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+  @@index([toUserId, type])
+  @@index([fromUserId, type])
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  userAId   String
+  userBId   String
+  createdAt DateTime @default(now())
+
+  userA User @relation("MatchesAsUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("MatchesAsUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  messages Message[]  // Adicionar mensagens
+
+  @@unique([userAId, userBId])
+  @@index([userAId, createdAt])  // Simplificar índices
+  @@index([userBId, createdAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@index([token, expiresAt])  // Para validação de sessão
+}
+
+// Adicionar modelo de mensagens
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  senderId  String
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([matchId, createdAt])
+  @@index([matchId, isRead])
+}

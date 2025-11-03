@@ -1,18 +1,44 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import { FlatCompat } from "@eslint/eslintrc";
+import baseDefault from "@phoenix35/eslint-config";
+import { dirname } from "path";
+import tseslint from "typescript-eslint";
+import { fileURLToPath } from "url";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
-]);
+const filename = fileURLToPath(import.meta.url);
+const dirname_ = dirname(filename);
+
+const compat = new FlatCompat({ baseDirectory: dirname_ });
+
+const eslintConfig = [
+  ...baseDefault,
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
+  {
+    languageOptions: { sourceType: "module" },
+    rules: {
+      // curly braces for all blocks
+      curly: ["error", "all"],
+      // double quotes
+      "@stylistic/js/quotes": ["error", "double", { avoidEscape: true }],
+      // statement beside the control
+      "@stylistic/js/nonblock-statement-body-position": ["error", "below"],
+      // disable camelcase rule
+      camelcase: "off",
+      // disable new-cap rule
+      "new-cap": "off",
+      "no-undefined": "off",
+    },
+  },
+];
 
 export default eslintConfig;
